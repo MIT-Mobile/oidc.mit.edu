@@ -74,8 +74,9 @@
 		
 	<mvc:view-controller path="/login" view-name="login" />
 
-	<security:http pattern="/login**" use-expressions="true" entry-point-ref="http403EntryPoint">
+	<security:http pattern="/login**" use-expressions="true" entry-point-ref="spnegoEntryPoint">
 		<security:intercept-url pattern="/login**" access="permitAll"/>	
+		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
 	</security:http>
 
 
@@ -91,31 +92,37 @@
             class="org.springframework.security.extensions.kerberos.KerberosServiceAuthenticationProvider">
             <property name="ticketValidator">
                     <bean class="org.springframework.security.extensions.kerberos.SunJaasKerberosTicketValidator">
-                            <property name="servicePrincipal" value="HTTP/oidc.mit.edu" />
+                            <property name="servicePrincipal" value="HTTP/oidc.mit.edu@ATHENA.MIT.EDU" />
                             <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
                             <!-- See the Javadoc for more information on that -->
-                            <property name="keyTabLocation" value="file:/var/run/keytab" />
+                            <property name="keyTabLocation" value="file:/etc/krb5.keytab" />
                             <property name="debug" value="true" />
                     </bean>
             </property>
-            <property name="userDetailsService" ref="dummyUserDetailsService" />
+            <property name="userDetailsService">
+            	<bean class="org.springframework.security.ldap.userdetails.LdapUserDetailsService">
+					<constructor-arg>
+						<bean id="userSearch"
+						    class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+						  <constructor-arg index="0" value=""/>
+						  <constructor-arg index="1" value="(uid={0})"/>
+						  <constructor-arg index="2" ref="contextSource" />
+						</bean>
+					</constructor-arg>
+					<constructor-arg>
+						<bean class="edu.mit.oidc.userdetails.MappedLdapAuthoritiesPopulator">
+						</bean>
+					</constructor-arg>
+            	</bean>
+            </property>
     </bean>
 
     <!-- This bean definition enables a very detailed Kerberos logging -->
     <bean
             class="org.springframework.security.extensions.kerberos.GlobalSunJaasKerberosConfig">
             <property name="debug" value="true" />
-            <property name="krbConfLocation" value="file:/etc/kerberos/krb.conf"/>
+            <property name="krbConfLocation" value="file:/etc/krb5.conf"/>
     </bean>
-
-    <!--
-            Just returns the User authenticated by Kerberos and gives him the
-            ROLE_USER
-    -->
-    <bean id="dummyUserDetailsService"
-            class="org.springframework.security.extensions.kerberos.sample.DummyUserDetailsService" />
-
-
 
 	<security:http disable-url-rewriting="true" use-expressions="true"> 
 		<security:form-login login-page="/login" authentication-failure-url="/login?error=failure" authentication-success-handler-ref="authenticationTimeStamper" />
