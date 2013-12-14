@@ -45,5 +45,20 @@
        	<artifactId>openid-connect-common</artifactId>
        	<version>${mitreid-version}</version>
       </dependency>
-    </dependencies>
+      <dependency>
+      	<groupId>org.springframework.security.kerberos</groupId>
+      	<artifactId>spring-security-kerberos-core</artifactId>
+      	<version>1.0.0.CI-SNAPSHOT</version>
+      </dependency>
+   </dependencies>
+	<repositories>
+	    <repository>
+	        <id>spring-snapshots</id>
+	        <name>Spring Snapshots</name>
+	        <url>http://repo.spring.io/snapshot</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+	</repositories>
 </project>
