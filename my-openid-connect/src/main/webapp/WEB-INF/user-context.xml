@@ -31,10 +31,15 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
 
-	<security:ldap-server url="ldaps://ldap-too.mit.edu/ou=users,ou=moira,dc=mit,dc=edu" />
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider ref="ldapAuthProvider" />
+        <security:authentication-provider ref="kerberosServiceAuthenticationProvider" /> <!-- Used with SPNEGO -->
 	</security:authentication-manager>
+	
+	
+	<!-- LDAP -->
+	
+	<security:ldap-server url="ldaps://ldap-too.mit.edu/ou=users,ou=moira,dc=mit,dc=edu" />
 
 	<bean id="ldapAuthProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
 		<constructor-arg>
@@ -72,6 +77,45 @@
 	<security:http pattern="/login**" use-expressions="true" entry-point-ref="http403EntryPoint">
 		<security:intercept-url pattern="/login**" access="permitAll"/>	
 	</security:http>
+
+
+	<!-- Kerberos -->
+
+    <bean id="spnegoEntryPoint" class="org.springframework.security.extensions.kerberos.web.SpnegoEntryPoint" />
+
+    <bean id="spnegoAuthenticationProcessingFilter" class="org.springframework.security.extensions.kerberos.web.SpnegoAuthenticationProcessingFilter">
+            <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="kerberosServiceAuthenticationProvider"
+            class="org.springframework.security.extensions.kerberos.KerberosServiceAuthenticationProvider">
+            <property name="ticketValidator">
+                    <bean class="org.springframework.security.extensions.kerberos.SunJaasKerberosTicketValidator">
+                            <property name="servicePrincipal" value="HTTP/oidc.mit.edu" />
+                            <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
+                            <!-- See the Javadoc for more information on that -->
+                            <property name="keyTabLocation" value="file:/var/run/keytab" />
+                            <property name="debug" value="true" />
+                    </bean>
+            </property>
+            <property name="userDetailsService" ref="dummyUserDetailsService" />
+    </bean>
+
+    <!-- This bean definition enables a very detailed Kerberos logging -->
+    <bean
+            class="org.springframework.security.extensions.kerberos.GlobalSunJaasKerberosConfig">
+            <property name="debug" value="true" />
+            <property name="krbConfLocation" value="file:/etc/kerberos/krb.conf"/>
+    </bean>
+
+    <!--
+            Just returns the User authenticated by Kerberos and gives him the
+            ROLE_USER
+    -->
+    <bean id="dummyUserDetailsService"
+            class="org.springframework.security.extensions.kerberos.sample.DummyUserDetailsService" />
+
+
 
 	<security:http disable-url-rewriting="true" use-expressions="true"> 
 		<security:form-login login-page="/login" authentication-failure-url="/login?error=failure" authentication-success-handler-ref="authenticationTimeStamper" />
