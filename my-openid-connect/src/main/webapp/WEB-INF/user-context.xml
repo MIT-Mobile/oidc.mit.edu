@@ -74,13 +74,19 @@
 		
 	<mvc:view-controller path="/login" view-name="login" />
 
-	<security:http pattern="/login**" use-expressions="true" entry-point-ref="spnegoEntryPoint">
+	<security:http pattern="/login**" use-expressions="true" entry-point-ref="http403EntryPoint">
 		<security:intercept-url pattern="/login**" access="permitAll"/>	
-		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
 	</security:http>
 
 
 	<!-- Kerberos -->
+	
+	<mvc:view-controller path="/kerberos_login" view-name="kerberos" />
+	
+	<security:http pattern="/kerberos_login**" use-expressions="true" entry-point-ref="spnegoEntryPoint">
+		<security:intercept-url pattern="/kerberos_login**" access="isAuthenticated()" />
+		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
+	</security:http>
 
     <bean id="spnegoEntryPoint" class="org.springframework.security.extensions.kerberos.web.SpnegoEntryPoint" />
 
