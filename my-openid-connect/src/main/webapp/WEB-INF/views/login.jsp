@@ -48,7 +48,7 @@ if (savedRequest != null) {
 %>
 <div class="row-fluid">
 	<div class="span4 offset1 well">
-		<a href="kerberos_login?return_to=<%= url %>" class="btn">Log in with Kerberos</a>
+		<a href="kerberos_login?target=<%= url %>" class="btn">Log in with Kerberos</a>
 	</div>
 </div>
 
