@@ -1,3 +1,6 @@
+<%@page import="org.springframework.security.web.savedrequest.HttpSessionRequestCache"%>
+<%@page import="org.springframework.security.web.savedrequest.SavedRequest"%>
+<%@page import="org.springframework.web.util.UriUtils"%>
 <%@ taglib prefix="authz" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="o" tagdir="/WEB-INF/tags"%>
@@ -32,8 +35,21 @@ $(document).ready(function() {
    
 </div>
 
+<%
+
+String url = "/";
+
+SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
+
+if (savedRequest != null) {
+	url = UriUtils.encodeQueryParam(savedRequest.getRedirectUrl(), "UTF-8");
+}				
+				
+%>
 <div class="row-fluid">
-	<button>Log in with Kerberos</button>
+	<div class="span4 offset1 well">
+		<a href="kerberos_login?return_to=<%= url %>" class="btn">Log in with Kerberos</a>
+	</div>
 </div>
 
 </div>
