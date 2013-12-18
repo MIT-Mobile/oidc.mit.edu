@@ -101,12 +101,12 @@
                             <property name="servicePrincipal" value="HTTP/oidc.mit.edu@ATHENA.MIT.EDU" />
                             <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
                             <!-- See the Javadoc for more information on that -->
-                            <property name="keyTabLocation" value="file:/etc/krb5.keytab" />
+                            <property name="keyTabLocation" value="file:/etc/httpd/krb5.keytab" />
                             <property name="debug" value="true" />
                     </bean>
             </property>
             <property name="userDetailsService">
-            	<bean class="org.springframework.security.ldap.userdetails.LdapUserDetailsService">
+            	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService">
 					<constructor-arg>
 						<bean id="userSearch"
 						    class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
