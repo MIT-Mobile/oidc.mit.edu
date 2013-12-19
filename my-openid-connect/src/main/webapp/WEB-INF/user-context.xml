@@ -121,6 +121,11 @@
 						<bean class="edu.mit.oidc.userdetails.MappedLdapAuthoritiesPopulator">
 						</bean>
 					</constructor-arg>
+					<constructor-arg>
+						<list>
+							<value>ATHENA.MIT.EDU</value>
+						</list>
+					</constructor-arg>
             	</bean>
             </property>
     </bean>

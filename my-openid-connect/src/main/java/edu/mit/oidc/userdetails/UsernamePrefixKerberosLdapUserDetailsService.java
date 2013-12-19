@@ -1,5 +1,6 @@
 package edu.mit.oidc.userdetails;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,16 +18,14 @@ public class UsernamePrefixKerberosLdapUserDetailsService extends LdapUserDetail
 
 	private static Logger logger = LoggerFactory.getLogger(UsernamePrefixKerberosLdapUserDetailsService.class);	
 	
-	public UsernamePrefixKerberosLdapUserDetailsService(LdapUserSearch userSearch) {
-		super(userSearch);
-		// TODO Auto-generated constructor stub
-	}
-
+	private List<String> validDomains = Collections.emptyList();
+	
 	public UsernamePrefixKerberosLdapUserDetailsService(
 			LdapUserSearch userSearch,
-			LdapAuthoritiesPopulator authoritiesPopulator) {
+			LdapAuthoritiesPopulator authoritiesPopulator,
+			List<String> validDomains) {
 		super(userSearch, authoritiesPopulator);
-		// TODO Auto-generated constructor stub
+		this.validDomains = validDomains;
 	}
 
 	@Override
@@ -39,8 +38,12 @@ public class UsernamePrefixKerberosLdapUserDetailsService extends LdapUserDetail
 			String user = parts.get(0);
 			String domain = parts.get(1);
 			
-			logger.info("Found valid user format: " + user + "  @  " + domain);
-			return super.loadUserByUsername(user);
+			if (validDomains.contains(domain)) {			
+				logger.info("Found valid user format: " + user + "  @  " + domain);
+				return super.loadUserByUsername(user);
+			} else {
+				throw new UsernameNotFoundException("Invalid domain for user: " + domain);
+			}
 		} else {
 			throw new UsernameNotFoundException("Could not find malformed username: " + username);
 		}
