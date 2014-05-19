@@ -9,10 +9,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.naming.NamingException;
+import javax.naming.OperationNotSupportedException;
 import javax.naming.directory.Attributes;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.NotImplementedException;
-import org.bouncycastle.crypto.digests.MD5Digest;
 import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
@@ -21,7 +22,6 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
 
-import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -38,7 +38,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public Object mapFromAttributes(Attributes attr) throws NamingException {
 			
-			if (attr.get("uid") == null) {
+			if (attr.get("uid") == null || attr.get("uidnumber") == null) {
 				return null; // we can't go on if there's no UID
 			}
 			
@@ -47,13 +47,13 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			// save the UID as the preferred username
 			ui.setPreferredUsername(attr.get("uid").get().toString());
 			
-			// TODO: hash the UID to get the sub
-			/*
-			String sub = new String(digest.digest(ui.getPreferredUsername().getBytes()));
+			// TODO: hash the UID number to get the sub
+			String sub = Hex.encodeHexString(digest.digest(attr.get("uidnumber").get().toString().getBytes()));
 			ui.setSub(sub);
-			*/
+			/*
 			// but for now just use the UID as the sub
 			ui.setSub(attr.get("uid").get().toString());
+			 */
 			
 			
 			
@@ -141,8 +141,8 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 
 	@Override
 	public UserInfo getBySubject(String sub) {
-		// TODO: sub == username in 1.0
-		return getByUsername(sub);
+		//return getByUsername(sub);
+		throw new NotImplementedException("Unable to search by subject in this repostory.");
 	}
 
 	@Override
