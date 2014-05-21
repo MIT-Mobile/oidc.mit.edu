@@ -21,10 +21,12 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 
 public class LdapUserInfoRepository implements UserInfoRepository {
 
@@ -100,11 +102,11 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			List res = ldapTemplate.search("", find.encode(), attributesMapper);
 			
 			if (res.isEmpty()) {
-				return null;
+				throw new IllegalArgumentException("Unable to load uid: " + username);
 			} else if (res.size() == 1) {
 				return (UserInfo) res.get(0);
 			} else {
-				return null;
+				throw new IllegalArgumentException("Unable to load uid: " + username);
 			}
 		}
 
@@ -148,9 +150,11 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	@Override
 	public UserInfo getByUsername(String username) {
 		try {
-			return cache.get(username);
+			UserInfo ui = cache.get(username);
+			return ui;
+		} catch (UncheckedExecutionException e) {
+			return null;
 		} catch (ExecutionException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
