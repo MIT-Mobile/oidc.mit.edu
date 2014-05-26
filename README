@@ -1,3 +1,4 @@
-This is an example project showing how to set up a maven overlay for OpenID-Connect-Java-Server
-After cloning issue a 'git submodule update --init --recursive' command to set up the git submodules,
-then you should be able to run 'mvn package'
+This project is the Maven Overlay configuration for the MIT OpenID Connet server, 
+hosted at https://oidc.mit.edu/ and available to current MIT students and staff. 
+
+The server is built on MITREid Connect, available here: https://github.com/mitreid-connect/
