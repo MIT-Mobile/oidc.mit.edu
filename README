@@ -1,4 +1,4 @@
-This project is the Maven Overlay configuration for the MIT OpenID Connet server, 
+This project is the Maven Overlay configuration for the MIT OpenID Connect server, 
 hosted at https://oidc.mit.edu/ and available to current MIT students and staff. 
 
 The server is built on MITREid Connect, available here: https://github.com/mitreid-connect/
