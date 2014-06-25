@@ -26,7 +26,7 @@ $(document).ready(function() {
 //-->
 </script>
 <o:topbar />
-<div class="container main">
+<div class="container-fluid main">
 
 	<h1>Log In</h1>
 
@@ -36,28 +36,32 @@ $(document).ready(function() {
 
 
 <div class="row-fluid">
-   <form action="<%=request.getContextPath()%>/j_spring_security_check" method="POST">
-      <div class="span3 well">
-         <h2>Log in with Kerberos username and password</h2>
-         <div class="input-prepend input-append">
+      <div class="span4 well">
+       <h2>Log in with Kerberos username and password</h2>
+	   <form action="<%=request.getContextPath()%>/j_spring_security_check" method="POST">
+	   	<div>
+         <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
-         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="j_username" class="span11">
+         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="j_username">
          	<span class="add-on">@mit.edu</span>
          	</div>
-         <div class="input-prepend">
+        </div>
+        <div>
+         <div class="input-prepend input-block-level">
          	<span class="add-on"><i class="icon-lock"></i></span>
-         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password" class="span11">
+         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
          </div>
-         <div class="form-actions"><input type="submit" class="btn" value="Login" name="submit"></div>
+        </div>
+        <div class="form-actions"><input type="submit" class="btn" value="Login" name="submit"></div>
+	   </form>
       </div>
-   </form>
    
-	<div class="span3 well">
+	<div class="span4 well">
 		<h2>Log in with Kerberos</h2>
 		<a href="kerberos_login?target=<%= url %>" class="btn">Use Existing Kerberos Tickets</a>
 	</div>
 
-	<div class="span3 well">
+	<div class="span4 well">
 		<h2>Log in with Certificate</h2>
 		<a href="cert_login?target=<%= url %>" class="btn">Use MIT Certificate</a>
 	</div>
