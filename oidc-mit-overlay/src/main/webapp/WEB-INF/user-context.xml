@@ -134,7 +134,7 @@
     <!-- X509 Login -->
 
 	<security:http pattern="/cert_login**" use-expressions="true">
-		<security:x509 subject-principal-regex="E=(.*?)," user-service-ref="certUserService" />
+		<security:x509 subject-principal-regex="EMAILADDRESS=(.*?)," user-service-ref="certUserService" />
 	</security:http>
 	
 	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService" id="certUserService">
