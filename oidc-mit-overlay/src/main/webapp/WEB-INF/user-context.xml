@@ -40,6 +40,7 @@
         <security:authentication-provider ref="kerberosServiceAuthenticationProvider" /> <!-- Used with SPNEGO -->
 	</security:authentication-manager>
 	
+	<context:component-scan base-package="edu.mit.oidc.web" />
 	
 	<!-- LDAP -->
 	
@@ -84,8 +85,6 @@
 
 	<!-- Kerberos -->
 	
-	<context:component-scan base-package="edu.mit.oidc.web" />
-	
 	<security:http pattern="/kerberos_login**" use-expressions="true" entry-point-ref="spnegoEntryPoint">
 		<security:intercept-url pattern="/kerberos_login**" access="isAuthenticated()" />
 		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
@@ -109,7 +108,7 @@
                     </bean>
             </property>
             <property name="userDetailsService">
-            	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService">
+            	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService" id="kerbUserService">
 					<constructor-arg>
 						<bean id="userSearch"
 						    class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
@@ -131,6 +130,34 @@
             	</bean>
             </property>
     </bean>
+    
+    <!-- X509 Login -->
+
+	<security:http pattern="/cert_login**" use-expressions="true">
+		<security:x509 subject-principal-regex="E=(.*?)," user-service-ref="certUserService" />
+	</security:http>
+	
+	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService" id="certUserService">
+		<constructor-arg>
+			<bean id="userSearch"
+			    class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+			  <constructor-arg index="0" value=""/>
+			  <constructor-arg index="1" value="(uid={0})"/>
+			  <constructor-arg index="2" ref="contextSource" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="edu.mit.oidc.userdetails.MappedLdapAuthoritiesPopulator">
+				<property name="admins" ref="admins" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<value>MIT.EDU</value>
+			</list>
+		</constructor-arg>		
+	</bean>
+
 
     <!-- This bean definition enables a very detailed Kerberos logging -->
     <bean
