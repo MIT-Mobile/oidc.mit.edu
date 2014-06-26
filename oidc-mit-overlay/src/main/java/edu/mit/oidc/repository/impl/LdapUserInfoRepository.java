@@ -72,7 +72,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			// phone number
 			if (attr.get("telephoneNumber") != null) {
 				ui.setPhoneNumber(attr.get("telephoneNumber").get().toString());
-				// TODO in 1.1: ui.setPhoneNumberVerified(true);
+				ui.setPhoneNumberVerified(true);
 			}
 			
 			// name structure
