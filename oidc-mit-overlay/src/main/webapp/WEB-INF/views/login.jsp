@@ -52,18 +52,18 @@ $(document).ready(function() {
          	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
          </div>
         </div>
-        <div class="form-actions"><input type="submit" class="btn" value="Log In" name="submit"></div>
+        <div><input type="submit" class="btn btn-inverse" value="Log In" name="submit"></div>
 	   </form>
       </div>
    
 	<div class="span4 well">
 		<h2>Log in with Kerberos</h2>
-		<a href="kerberos_login?target=<%= url %>" class="btn">Use Existing Kerberos Tickets</a>
+		<div><a href="kerberos_login?target=<%= url %>" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
 	</div>
 
 	<div class="span4 well">
 		<h2>Log in with Certificate</h2>
-		<a href="cert_login?target=<%= url %>" class="btn">Use MIT Certificate</a>
+		<div><a href="cert_login?target=<%= url %>" class="btn btn-inverse">Use MIT Certificate</a></div>
 	</div>
 
 </div>
