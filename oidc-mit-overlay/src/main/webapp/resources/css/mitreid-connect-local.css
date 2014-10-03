@@ -59,12 +59,18 @@
     border-top-color: #ffffff;
 }
 
- #footer {
+#footer {
 	background-color: #1b1b1b;
-	margin-top: 6em;
- }
+}
  
- .main {
-	padding-top: 90px;
- }
+#push, #footer {
+    min-height: 90px;
+}
 
+.main {
+	padding-top: 90px;
+}
+
+.navbar .brand img {
+  left: 4px;
+}
