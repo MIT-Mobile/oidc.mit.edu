@@ -52,7 +52,7 @@ $(document).ready(function() {
          	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
          </div>
         </div>
-        <div class="form-actions"><input type="submit" class="btn" value="Login" name="submit"></div>
+        <div class="form-actions"><input type="submit" class="btn" value="Log In" name="submit"></div>
 	   </form>
       </div>
    

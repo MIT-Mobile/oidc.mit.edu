@@ -1,7 +1,15 @@
+<div class="row-fluid">
+
+	<div class="span2"><img src="/resources/images/openid_connect_large.png" alt="MITREid Connect"></div>
+
+	<div class="span10">
+
 <h2>About</h2>
 <p>
-OIDC.MIT.edu is a RESTful authorization authentication service that provides both an OAuth 2.0 Authorization Server and an 
-OpenID Connect Identity Provider to members of the MIT community. This service allows its users to set authorization requirements 
+MIT's OpenID Connect Pilot is a RESTful authorization and authentication service that provides 
+both an OAuth 2.0 Authorization Server and an 
+OpenID Connect Identity Provider to members of the MIT community. 
+This service allows its users to set authorization requirements 
 for their applications based on OAuth2.0 for Applications to access their RESTful Web APIs and Services at MIT.
 </p>
 
@@ -21,3 +29,14 @@ for their applications based on OAuth2.0 for Applications to access their RESTfu
 </ul>
 
 </p>
+
+<h3>Get started</h3>
+
+<p>
+
+Developers can <a href="/manage/dev/dynreg">register an OAuth or OpenID Connect client</a> or 
+<a href="/manage/dev/resource">register an OAuth protected resource</a>.
+
+</p>
+
+</div>

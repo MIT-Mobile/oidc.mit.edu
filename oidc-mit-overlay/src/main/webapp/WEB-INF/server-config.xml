@@ -31,7 +31,7 @@
 	<bean id="configBean" class="org.mitre.openid.connect.config.ConfigurationPropertiesBean">
 		<property name="issuer" value="https://oidc.mit.edu/" />
  		<property name="logoImageUrl" value="resources/images/mit-logo-small.png" />
- 		<property name="topbarTitle" value="MIT OpenID Connect Server" />
+ 		<property name="topbarTitle" value="MIT OpenID Connect Pilot" />
 	</bean>
 	
 </beans>
