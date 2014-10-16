@@ -18,8 +18,6 @@ for their applications based on OAuth2.0 for Applications to access their RESTfu
 
 <h3>Benefits and key features</h3>
 
-<p>
-
 <ul>
 	<li>Allows developers of websites and applications to authenticate MIT users using OpenID Connect</li>
     <li>Allows Developers of APIs at MIT to register their APIs as a resource to be protected by OIDC</li>
@@ -27,8 +25,6 @@ for their applications based on OAuth2.0 for Applications to access their RESTfu
     token from OIDC prior to accessing the protected APIs</li>
     <li>Application developers at MIT can obtain OAuth2.0 tokens specifically for their applications</li>
 </ul>
-
-</p>
 
 <h3>Get started</h3>
 
@@ -38,5 +34,7 @@ Developers can <a href="/manage/dev/dynreg">register an OAuth or OpenID Connect 
 <a href="/manage/dev/resource">register an OAuth protected resource</a>.
 
 </p>
+
+</div>
 
 </div>
